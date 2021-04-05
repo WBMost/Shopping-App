@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v)
+            {
                 if(User.getText().toString().equals("admin") && Pass.getText().toString().equals("admin"))
                     Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
                 else
