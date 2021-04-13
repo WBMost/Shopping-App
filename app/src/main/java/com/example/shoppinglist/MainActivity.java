@@ -7,14 +7,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.shoppinglist.Login;
 import com.example.shoppinglist.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
+
     public MainActivity(){
         super(R.layout.main_activity);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,4 +45,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

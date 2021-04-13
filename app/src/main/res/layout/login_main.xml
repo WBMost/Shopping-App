@@ -77,9 +77,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#00FFFFFF"
+            android:cursorVisible="true"
             android:ems="10"
             android:hint="Username"
-            android:inputType="none|textPersonName"
+            android:inputType="textVisiblePassword"
+            android:password="false"
             app:passwordToggleEnabled="false" />
     </com.google.android.material.textfield.TextInputLayout>
 

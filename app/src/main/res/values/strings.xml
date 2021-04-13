@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ShoppingList+</string>
+    <string name="tab1">List</string>
+    <string name="tab2">Stores</string>
 </resources>
