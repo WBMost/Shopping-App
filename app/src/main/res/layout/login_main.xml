@@ -89,8 +89,9 @@
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="appLogin"
         android:text="login"
+        android:clickable="true"
+        android:onClick="appLogin"
         android:textColor="?android:attr/panelColorForeground"
         app:backgroundTint="?attr/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -99,6 +100,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
         app:layout_constraintVertical_bias="0.485" />
+
+    <Button
+        android:id="@+id/returnToMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:contentDescription="head back to menu"
+        android:onClick="returnToMenu"
+        android:text="return to menu"
+        android:textColor="?android:attr/panelColorForeground"
+        app:backgroundTint="?attr/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toEndOf="@+id/login"
+        app:layout_constraintTop_toTopOf="@+id/button"
+        app:layout_constraintVertical_bias="0.792" />
 
     <Button
         android:id="@+id/button"

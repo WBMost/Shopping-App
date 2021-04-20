@@ -2,4 +2,6 @@
     <string name="app_name">ShoppingList+</string>
     <string name="tab1">List</string>
     <string name="tab2">Stores</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
