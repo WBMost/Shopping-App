@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,9 +36,8 @@ public class Activity extends AppCompatActivity {
     public groLists listOlists;
     public gList gListSelected;
     public static int tempPosition=-1;
+    private int evenMoreTempPosition=-1;
     //endregion
-
-
 
     public Activity(){
         super(R.layout.main_container);
@@ -47,84 +47,18 @@ public class Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         listOlists = new groLists();
-
-        /*listOlists.addItem(new gList("Grocery","Weekly stuff",Calendar.getInstance().getTime().toString()));
-        listOlists.G_LISTS.get(0).addGItem(new gItem("Fruit","Banana",Calendar.getInstance().getTime().toString()));
-        listOlists.G_LISTS.get(0).addGItem(new gItem("Fruit","Strawberry",Calendar.getInstance().getTime().toString()));
-        listOlists.G_LISTS.get(0).addGItem(new gItem("Frozen","Supreme Pizza",Calendar.getInstance().getTime().toString()));
-        listOlists.G_LISTS.get(0).addGItem(new gItem("Dairy","Gallon of Milk",Calendar.getInstance().getTime().toString()));
-        listOlists.addItem(new gList("Grocery","Party",Calendar.getInstance().getTime().toString()));
-        listOlists.G_LISTS.get(1).addGItem(new gItem("Fruit","Apples",Calendar.getInstance().getTime().toString()));
-        listOlists.addItem(new gList("Grocery","Birthday",Calendar.getInstance().getTime().toString()));
-        listOlists.G_LISTS.get(2).addGItem(new gItem("Bakery","Cake",""));
-        listOlists.G_LISTS.get(2).addGItem(new gItem("Bakery","Candles",""));
-        listOlists.G_LISTS.get(2).addGItem(new gItem("Drink","Soda",""));
-        listOlists.addItem(new gList("Furniture","Stuff for apartment",Calendar.getInstance().getTime().toString()));
-        listOlists.G_LISTS.get(3).addGItem(new gItem("Furniture","Couch",""));
-        listOlists.G_LISTS.get(3).addGItem(new gItem("Electronic","Laptop",""));*/
         try {
             readListsFile();
         }catch (Exception e) {};
         tempPosition=-1;
-
         setContentView(R.layout.main_container);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, MainMenu.newInstance()).commitNow();
         }
     }
 
-    public void writeListsFile()
-    {
-        /*File path = getApplicationContext().getFilesDir();
-        File file = new File(path,"listOlists.txt");
-        FileOutputStream stream = null;
-        try { stream = new FileOutputStream(file); } catch (FileNotFoundException e) { e.printStackTrace(); }*/
-        try {
-            FileWriter out = new FileWriter(new File(getApplicationContext().getFilesDir(),"listOlists.txt"));
-            for(int x = 0; x < listOlists.G_LISTS.size(); x++)
-            {
-                out.write("L" + listOlists.G_LISTS.get(x).toString() + "\n");
-
-                for(int i = 0; i < listOlists.G_LISTS.get(x).ITEMS.size(); i++)
-                {
-                    out.write("I" + listOlists.G_LISTS.get(x).ITEMS.get(i).toString() + "\n");
-                }
-            }
-            out.close();
-        } catch (IOException e) { e.printStackTrace(); }
-    }
-
-    public void readListsFile()
-    {
-        Context context = getApplicationContext();
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        BufferedReader in = null;
-
-        try {
-            in = new BufferedReader(new FileReader(new File(context.getFilesDir(), "listOlists.txt")));
-
-            while ((line = in.readLine()) != null)
-            {
-                if(line.charAt(0) == 'L') {
-                    listOlists.addItem(new gList(line.substring(1,line.indexOf("\\1")), line.substring(line.indexOf("\\1")+2, line.indexOf("\\2")),line.substring(line.indexOf("\\2")+2)));
-                }
-                if(line.charAt(0) == 'I')
-                {
-                    listOlists.G_LISTS.get(listOlists.G_LISTS.size()-1).addGItem(new gItem(line.substring(1,line.indexOf("\\1")), line.substring(line.indexOf("\\1")+2, line.indexOf("\\2")),line.substring(line.indexOf("\\2")+2)));
-                }
-                stringBuilder.append(line);
-            }
-        } catch (FileNotFoundException e) {
-            Toast.makeText(getApplicationContext(), "Failed to locate readable file.", Toast.LENGTH_SHORT).show();;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public static void setTempPostion(int num){
-        tempPosition=num;
+    public static void setTempPosition(int num){
+        tempPosition = num;
     }
 
     //region Login functions
@@ -146,9 +80,11 @@ public class Activity extends AppCompatActivity {
     }
     //endregion
 
+
     //region Lists and all their bits
     public void openManageLists(View view) {
         tempPosition=-1;
+        evenMoreTempPosition=-1;
         getSupportFragmentManager().beginTransaction().replace(R.id.container, RecyclerDisplay.newInstance(listOlists)).commitNow();
     }
 
@@ -179,8 +115,6 @@ public class Activity extends AppCompatActivity {
         openManageLists(view);
     }
 
-
-
     public void deleteList(View view) {
         if(tempPosition != -1) {
             listOlists.G_LISTS.remove(tempPosition);
@@ -197,6 +131,8 @@ public class Activity extends AppCompatActivity {
     public void editList(View view) {
         if(tempPosition != -1) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, RecyclerDisplay.newInstance(listOlists.G_LISTS.get(tempPosition))).commitNow();
+            evenMoreTempPosition=tempPosition;
+            tempPosition=-1;
         }
         else
         {
@@ -216,9 +152,10 @@ public class Activity extends AppCompatActivity {
     public void selectList(View view) {
         if(tempPosition != -1) {
             gListSelected = listOlists.G_LISTS.get(tempPosition);
+            TextView selectedList = findViewById(R.id.selectedListText);
+            selectedList.setText(gListSelected.name);
             getSupportFragmentManager().beginTransaction().replace(R.id.container, MainMenu.newInstance()).commitNow();
             Toast.makeText(getApplicationContext(), "List " + gListSelected.name+ " selected", Toast.LENGTH_SHORT).show();
-            //selectedList.setText(gListSelected.name);
         }
         else
         {
@@ -238,14 +175,71 @@ public class Activity extends AppCompatActivity {
         li = new gItem(Type.getText().toString(),Name.getText().toString(),Calendar.getInstance().getTime().toString());
         listOlists.G_LISTS.get(tempPosition).ITEMS.add(li);
         writeListsFile();
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, RecyclerDisplay.newInstance(listOlists.G_LISTS.get(tempPosition))).commitNow();
+        tempPosition=-1;
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, RecyclerDisplay.newInstance(listOlists.G_LISTS.get(evenMoreTempPosition))).commitNow();
     }
     public void deleteItem(View view) {
-        writeListsFile();
+        if(tempPosition != -1) {
+            listOlists.G_LISTS.get(evenMoreTempPosition).ITEMS.remove(tempPosition);
+            tempPosition=-1;
+            writeListsFile();
+            openManageLists(view);
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "No item selected to delete", Toast.LENGTH_SHORT).show();
+        }
     }
+
     public void editItem(View view) {
         writeListsFile();
     }
     //endregion
 
+    //region File read and write
+    public void writeListsFile()
+    {
+        try {
+            FileWriter out = new FileWriter(new File(getApplicationContext().getFilesDir(),"listOlists.txt"));
+            for(int x = 0; x < listOlists.G_LISTS.size(); x++)
+            {
+                out.write("L" + listOlists.G_LISTS.get(x).toString() + "\n");
+
+                for(int i = 0; i < listOlists.G_LISTS.get(x).ITEMS.size(); i++)
+                {
+                    out.write("I" + listOlists.G_LISTS.get(x).ITEMS.get(i).toString() + "\n");
+                }
+            }
+            out.close();
+        } catch (IOException e) { Toast.makeText(getApplicationContext(), "Failed to write file.", Toast.LENGTH_SHORT).show(); e.printStackTrace(); }
+    }
+
+    public void readListsFile()
+    {
+        Context context = getApplicationContext();
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        BufferedReader in = null;
+
+        try {
+            in = new BufferedReader(new FileReader(new File(context.getFilesDir(), "listOlists.txt")));
+
+            while ((line = in.readLine()) != null)
+            {
+                if(line.charAt(0) == 'L') {
+                    listOlists.addItem(new gList(line.substring(1,line.indexOf("\\1")), line.substring(line.indexOf("\\1")+2, line.indexOf("\\2")),line.substring(line.indexOf("\\2")+2)));
+                }
+                if(line.charAt(0) == 'I')
+                {
+                    listOlists.G_LISTS.get(listOlists.G_LISTS.size()-1).addGItem(new gItem(line.substring(1,line.indexOf("\\1")), line.substring(line.indexOf("\\1")+2, line.indexOf("\\2")),line.substring(line.indexOf("\\2")+2)));
+                }
+                stringBuilder.append(line);
+            }
+        } catch (FileNotFoundException e) {
+            Toast.makeText(getApplicationContext(), "Failed to locate readable file.", Toast.LENGTH_SHORT).show();;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //endregion
 }

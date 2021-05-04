@@ -12,14 +12,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.shoppinglist.Activity;
-import com.example.shoppinglist.ListOLists.dummy.DummyContent.DummyItem;
 import com.example.shoppinglist.R;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
- * TODO: Replace the implementation with code for your data type.
+ *
  */
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
@@ -58,9 +56,9 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             public void onClick(View v) {
                 if (!holder.selected) {
                     holder.cardView.setBackgroundColor(Color.parseColor("#f0f0f0"));
-                    Activity.setTempPostion(position);
+                    Activity.setTempPosition(position);
                 } else {
-                    Activity.setTempPostion(-1);
+                    Activity.setTempPosition(-1);
                     holder.cardView.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 }
                 holder.selected = !holder.selected;

@@ -50,9 +50,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 if (!holder.selected) {
 
                     holder.cardView.setBackgroundColor(Color.parseColor("#f0f0f0"));
-                    Activity.setTempPostion(position);
+                    Activity.setTempPosition(position);
                 } else {
-                    Activity.setTempPostion(-1);
+                    Activity.setTempPosition(-1);
                     holder.cardView.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 }
                 holder.selected = !holder.selected;

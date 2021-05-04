@@ -19,23 +19,16 @@ import com.example.shoppinglist.ListOLists.dummy.DummyContent;
 
 import java.util.List;
 
-/**
- * A fragment representing a list of Items.
- */
+
 public class EditLists extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private EditText name;
     private EditText type;
     private gList listo;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+
     public EditLists(gList list) {
         listo = list;
         /*name = getActivity().findViewById(R.id.currentListName);
@@ -44,7 +37,6 @@ public class EditLists extends Fragment {
         type.setText(listo.type, TextView.BufferType.EDITABLE);*/
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static EditLists newInstance(gList list) {
         EditLists fragment = new EditLists(list);

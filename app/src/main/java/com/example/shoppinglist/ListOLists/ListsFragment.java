@@ -13,24 +13,15 @@ import android.view.ViewGroup;
 
 import com.example.shoppinglist.R;
 
-/**
- * A fragment representing a list of Items.
- */
 public class ListsFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+
     public ListsFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static ListsFragment newInstance(groLists list) {
         ListsFragment fragment = new ListsFragment();
