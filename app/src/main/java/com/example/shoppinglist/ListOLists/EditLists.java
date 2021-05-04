@@ -4,36 +4,50 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.shoppinglist.R;
+import com.example.shoppinglist.ListOLists.dummy.DummyContent;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  */
-public class ListsFragment extends Fragment {
+public class EditLists extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
+    private EditText name;
+    private EditText type;
+    private gList listo;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ListsFragment() {
+    public EditLists(gList list) {
+        listo = list;
+        /*name = getActivity().findViewById(R.id.currentListName);
+        type = getActivity().findViewById(R.id.currentListType);
+        name.setText(listo.name, TextView.BufferType.EDITABLE);
+        type.setText(listo.type, TextView.BufferType.EDITABLE);*/
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ListsFragment newInstance(groLists list) {
-        ListsFragment fragment = new ListsFragment();
+    public static EditLists newInstance(gList list) {
+        EditLists fragment = new EditLists(list);
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -58,7 +72,7 @@ public class ListsFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new RecyclerViewAdapter(groLists.G_LISTS));
+            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(listo.getITEMS()));
         }
         return view;
     }

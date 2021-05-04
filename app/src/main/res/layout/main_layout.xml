@@ -72,7 +72,7 @@
 
     <Button
         android:id="@+id/openManageStores"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:clickable="true"
@@ -88,7 +88,7 @@
 
     <Button
         android:id="@+id/openManageLists"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:onClick="openManageLists"
@@ -117,5 +117,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976" />
+
+    <TextView
+        android:id="@+id/selectedStore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/StoreText"
+        app:layout_constraintStart_toEndOf="@+id/StoreText"
+        app:layout_constraintTop_toTopOf="@+id/StoreText"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/selectedListText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/ListText"
+        app:layout_constraintStart_toStartOf="@+id/selectedStore"
+        app:layout_constraintTop_toTopOf="@+id/ListText"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

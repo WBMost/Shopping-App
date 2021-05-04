@@ -1,4 +1,4 @@
-package com.example.shoppinglist;
+package com.example.shoppinglist.ListOLists;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,14 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class Login extends Fragment{
+import com.example.shoppinglist.R;
 
-    public static Login newInstance() { return new Login(); }
+public class NewList extends Fragment{
+
+    public static NewList newInstance() { return new NewList(); }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable
     ViewGroup container, @Nullable Bundle savedInstanceState){
-        return inflater.inflate(R.layout.login_main, container, false);
+        return inflater.inflate(R.layout.create_list, container, false);
     }
 }
