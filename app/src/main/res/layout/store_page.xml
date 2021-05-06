@@ -7,56 +7,88 @@
     android:layout_width="match_parent"
     tools:context=".MainMenu">
 
+    <TextView
+        android:id="@+id/ListName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Store Manager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022" />
+
     <FrameLayout
-        android:id="@+id/groFrameLayout"
+        android:id="@+id/StoreframeLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/addItem"
+        app:layout_constraintBottom_toTopOf="@+id/addStore"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentListName"
+        app:layout_constraintTop_toBottomOf="@+id/ListName"
         tools:context=".Activity">
-
     </FrameLayout>
 
     <Button
-        android:id="@+id/addItem"
+        android:id="@+id/addStore"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:contentDescription="head back to menu"
-        android:onClick="addItem"
-        android:text="create Item"
+        android:onClick="addStore"
+        android:text="create store"
         android:textColor="?android:attr/panelColorForeground"
         app:backgroundTint="?attr/colorAccent"
-        app:layout_constraintBottom_toTopOf="@+id/editItem"
+        app:layout_constraintBottom_toTopOf="@+id/editStore"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ListName"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/editItem"
+        android:id="@+id/editStore"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:contentDescription="head back to menu"
-        android:onClick="editItem"
-        android:text="edit Item"
+        android:onClick="editStore"
+        android:text="edit store"
         android:textColor="?android:attr/panelColorForeground"
         app:backgroundTint="?attr/colorAccent"
-        app:layout_constraintBottom_toTopOf="@+id/deleteItem"
+        app:layout_constraintBottom_toTopOf="@+id/deleteStore"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ListName"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/returnToMenu"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:contentDescription="head back to menu"
+        android:onClick="selectStore"
+        android:text="select store"
+        android:textColor="?android:attr/panelColorForeground"
+        app:backgroundTint="?attr/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/leave"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/leave"
-        android:layout_width="0dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:contentDescription="head back to menu"
-        android:onClick="editedList"
-        android:text="return to lists"
+        android:onClick="returnToMenu"
+        android:text="cancel"
         android:textColor="?android:attr/panelColorForeground"
         app:backgroundTint="?attr/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -67,39 +99,20 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/deleteItem"
+        android:id="@+id/deleteStore"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:contentDescription="head back to menu"
-        android:onClick="deleteItem"
-        android:text="Delete Item"
+        android:onClick="deleteStore"
+        android:text="Delete Store"
         android:textColor="?android:attr/panelColorForeground"
         app:backgroundTint="?attr/colorAccent"
         app:layout_constraintBottom_toTopOf="@+id/leave"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/currentListName"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="none|textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/currentListType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="none|textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/currentListName"
-        app:layout_constraintStart_toEndOf="@+id/currentListName"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,9 @@ import com.example.shoppinglist.ListOLists.gItem;
 import com.example.shoppinglist.ListOLists.gList;
 import com.example.shoppinglist.ListOLists.groLists;
 import com.example.shoppinglist.ListOLists.NewList;
+import com.example.shoppinglist.Store.CreateStore;
+import com.example.shoppinglist.Store.Store;
+import com.example.shoppinglist.Store.StoreRecyclerDisplay;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,9 +37,14 @@ public class Activity extends AppCompatActivity {
 
     //region variables for lists
     public groLists listOlists;
+    public ArrayList<Store> listOstores;
+
     public gList gListSelected;
     public static int tempPosition=-1;
     private int evenMoreTempPosition=-1;
+
+    public static EditText changeListName;
+    public static EditText changeListType;
     //endregion
 
     public Activity(){
@@ -47,8 +55,11 @@ public class Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         listOlists = new groLists();
+        listOstores = new ArrayList<Store>();
+
         try {
             readListsFile();
+            readStoresFile();
         }catch (Exception e) {};
         tempPosition=-1;
         setContentView(R.layout.main_container);
@@ -74,12 +85,59 @@ public class Activity extends AppCompatActivity {
     }
     //endregion
 
+
     //region Store bits
     public void openManageStores(View view) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, MainMenu.newInstance()).commitNow();
+        tempPosition=-1;
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, StoreRecyclerDisplay.newInstance(listOstores)).commitNow();
+    }
+
+    public void addStore(View view) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, CreateStore.newInstance()).commitNow();
+    }
+    public void createStore(View view) {
+        EditText Type = findViewById(R.id.newStoreType);
+        EditText Name = findViewById(R.id.newStoreName);
+        Store store;
+        store = new Store(Name.getText().toString(),Type.getText().toString());
+        listOstores.add(store);
+        tempPosition=-1;
+        writeStoresFile();
+        openManageStores(view);
+    }
+
+    public void deleteStore(View view) {
+        if(tempPosition != -1) {
+            listOstores.remove(tempPosition);
+            tempPosition=-1;
+            writeStoresFile();
+            openManageStores(view);
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "No store selected to delete", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void editStore(View view) {
+        Toast.makeText(getApplicationContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
+    }
+
+    public void selectStore(View view) {
+        if(tempPosition != -1) {
+            /*gListSelected = listOlists.G_LISTS.get(tempPosition);
+            TextView selectedList = findViewById(R.id.selectedListText);
+            selectedList.setText(gListSelected.name);
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, MainMenu.newInstance()).commitNow();
+            Toast.makeText(getApplicationContext(), "List " + gListSelected.name+ " selected", Toast.LENGTH_SHORT).show();*/
+            Toast.makeText(getApplicationContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "No Store selected", Toast.LENGTH_SHORT).show();
+        }
     }
     //endregion
-
 
     //region Lists and all their bits
     public void openManageLists(View view) {
@@ -131,6 +189,16 @@ public class Activity extends AppCompatActivity {
     public void editList(View view) {
         if(tempPosition != -1) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, RecyclerDisplay.newInstance(listOlists.G_LISTS.get(tempPosition))).commitNow();
+            changeListName = findViewById(R.id.currentListName);
+            changeListType = findViewById(R.id.currentListType);
+            if(changeListName!=null)
+            {
+                changeListName.setText(listOlists.G_LISTS.get(tempPosition).name);
+            }
+            if(changeListType!=null)
+            {
+                changeListType.setText(listOlists.G_LISTS.get(tempPosition).type);
+            }
             evenMoreTempPosition=tempPosition;
             tempPosition=-1;
         }
@@ -141,11 +209,19 @@ public class Activity extends AppCompatActivity {
     }
 
     public void editedList(View view) {
-        EditText Type = findViewById(R.id.newItemType);
-        EditText Name = findViewById(R.id.newItemName);
-        gList li;
-        li = new gList(Type.getText().toString(),Name.getText().toString(),Name.getText().toString());
-        listOlists.G_LISTS.set(tempPosition, li);
+        changeListName = findViewById(R.id.currentListName);
+        changeListType = findViewById(R.id.currentListType);
+        if(changeListName!=null && changeListType!=null)
+        {
+            if(!changeListName.getText().equals(listOlists.G_LISTS.get(evenMoreTempPosition).name) || !changeListType.getText().equals(listOlists.G_LISTS.get(evenMoreTempPosition).type))
+            {
+                gList li;
+                li = new gList(changeListType.getText().toString(),changeListName.getText().toString(),Calendar.getInstance().getTime().toString());
+                li.ITEMS = listOlists.G_LISTS.get(evenMoreTempPosition).ITEMS;
+                listOlists.G_LISTS.set(evenMoreTempPosition, li);
+            }
+        }
+        writeListsFile();
         openManageLists(view);
     }
 
@@ -162,39 +238,42 @@ public class Activity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No list selected", Toast.LENGTH_SHORT).show();
         }
     }
-    //endregion
 
-    //region Items
-    public void addItem(View view) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, NewItem.newInstance()).commitNow();
-    }
-    public void createItem(View view){
-        EditText Type = findViewById(R.id.newItemType);
-        EditText Name = findViewById(R.id.newItemName);
-        gItem li;
-        li = new gItem(Type.getText().toString(),Name.getText().toString(),Calendar.getInstance().getTime().toString());
-        listOlists.G_LISTS.get(tempPosition).ITEMS.add(li);
-        writeListsFile();
-        tempPosition=-1;
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, RecyclerDisplay.newInstance(listOlists.G_LISTS.get(evenMoreTempPosition))).commitNow();
-    }
-    public void deleteItem(View view) {
-        if(tempPosition != -1) {
-            listOlists.G_LISTS.get(evenMoreTempPosition).ITEMS.remove(tempPosition);
-            tempPosition=-1;
+        //region Items
+        public void addItem(View view) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, NewItem.newInstance()).commitNow();
+        }
+        public void createItem(View view){
+            EditText Type = findViewById(R.id.newItemType);
+            EditText Name = findViewById(R.id.newItemName);
+            gItem li;
+            li = new gItem(Type.getText().toString(),Name.getText().toString(),Calendar.getInstance().getTime().toString());
+            listOlists.G_LISTS.get(evenMoreTempPosition).ITEMS.add(li);
             writeListsFile();
-            openManageLists(view);
+            tempPosition=-1;
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, RecyclerDisplay.newInstance(listOlists.G_LISTS.get(evenMoreTempPosition))).commitNow();
         }
-        else
-        {
-            Toast.makeText(getApplicationContext(), "No item selected to delete", Toast.LENGTH_SHORT).show();
-        }
-    }
 
-    public void editItem(View view) {
-        writeListsFile();
-    }
+        public void deleteItem(View view) {
+            if(tempPosition != -1) {
+                listOlists.G_LISTS.get(evenMoreTempPosition).ITEMS.remove(tempPosition);
+                tempPosition=-1;
+                writeListsFile();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, RecyclerDisplay.newInstance(listOlists.G_LISTS.get(evenMoreTempPosition))).commitNow();
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(), "No item selected to delete", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        public void editItem(View view) {
+            writeListsFile();
+        }
+        //endregion
+
     //endregion
+
 
     //region File read and write
     public void writeListsFile()
@@ -213,7 +292,6 @@ public class Activity extends AppCompatActivity {
             out.close();
         } catch (IOException e) { Toast.makeText(getApplicationContext(), "Failed to write file.", Toast.LENGTH_SHORT).show(); e.printStackTrace(); }
     }
-
     public void readListsFile()
     {
         Context context = getApplicationContext();
@@ -232,6 +310,50 @@ public class Activity extends AppCompatActivity {
                 if(line.charAt(0) == 'I')
                 {
                     listOlists.G_LISTS.get(listOlists.G_LISTS.size()-1).addGItem(new gItem(line.substring(1,line.indexOf("\\1")), line.substring(line.indexOf("\\1")+2, line.indexOf("\\2")),line.substring(line.indexOf("\\2")+2)));
+                }
+                stringBuilder.append(line);
+            }
+        } catch (FileNotFoundException e) {
+            Toast.makeText(getApplicationContext(), "Failed to locate readable file.", Toast.LENGTH_SHORT).show();;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeStoresFile()
+    {
+        try {
+            FileWriter out = new FileWriter(new File(getApplicationContext().getFilesDir(),"listOStores.txt"));
+            for(int x = 0; x < listOstores.size(); x++)
+            {
+                out.write("S" + listOstores.get(x).toString() + "\n");
+
+                for(int i = 0; i < listOstores.get(x).Layout.size(); i++)
+                {
+                    out.write("A" + listOstores.get(x).Layout.get(i).toString() + "\n");
+                }
+            }
+            out.close();
+        } catch (IOException e) { Toast.makeText(getApplicationContext(), "Failed to write file.", Toast.LENGTH_SHORT).show(); e.printStackTrace(); }
+    }
+    public void readStoresFile()
+    {
+        Context context = getApplicationContext();
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        BufferedReader in = null;
+
+        try {
+            in = new BufferedReader(new FileReader(new File(context.getFilesDir(), "listOStores.txt")));
+
+            while ((line = in.readLine()) != null)
+            {
+                if(line.charAt(0) == 'S') {
+                    listOstores.add(new Store(line.substring(1,line.indexOf("\\1")), line.substring(line.indexOf("\\1")+2, line.indexOf("\\2")),line.substring(line.indexOf("\\2")+2)));
+                }
+                if(line.charAt(0) == 'A')
+                {
+                    listOstores.get(listOstores.size()-1).Layout.add(new Store.Aisle(line.substring(1,line.indexOf("\\1")), line.substring(line.indexOf("\\1")+2, line.indexOf("\\2")),line.substring(line.indexOf("\\2")+2, line.indexOf("\\3")),line.substring(line.indexOf("\\3")+2, line.indexOf("\\4")),line.substring(line.indexOf("\\4")+2, line.indexOf("\\5")),line.substring(line.indexOf("\\5")+2)));
                 }
                 stringBuilder.append(line);
             }

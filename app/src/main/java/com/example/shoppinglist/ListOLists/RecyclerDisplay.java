@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.shoppinglist.R;
 
@@ -31,8 +32,9 @@ public class RecyclerDisplay extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if(gList==null)
             return inflater.inflate(R.layout.list_page, container, false);
-        else
+        else {
             return inflater.inflate(R.layout.grocery_page, container, false);
+        }
     }
 
     @Override
