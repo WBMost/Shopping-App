@@ -1,6 +1,7 @@
 package com.example.shoppinglist;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -52,6 +53,8 @@ public class Activity extends AppCompatActivity{
     public static gList gListSelected;
     public static gList tempgListSelected;//second gList for temp edits to shopping list
     public static Store gStoreSelected;
+
+    public static int scale=50;
 
     //xml shit
     public EditText changeListName;
@@ -328,25 +331,67 @@ public class Activity extends AppCompatActivity{
         EditText posY = findViewById(R.id.aisle_PosY);
         EditText width = findViewById(R.id.aisle_Width);
         EditText length = findViewById(R.id.aisle_Length);
+        String string = "";
         if(TextUtils.isEmpty(posX.getText()))
         {
-            posX.setText("0");
+
+            string = "0";
+            posX.setText(string);
         }
         if(TextUtils.isEmpty(posY.getText()))
         {
-            posY.setText("0");
+            string = "0";
+            posY.setText(string);
         }
         if(TextUtils.isEmpty(width.getText()))
         {
-            width.setText("50");
+            width.setText("2");
         }
         if(TextUtils.isEmpty(length.getText()))
         {
-            length.setText("150");
+            length.setText("10");
         }
-        listOstores.get(storeTempPosition).Layout.add(new Store.Aisle("fruit","name", posX.getText().toString(), posY.getText().toString(), length.getText().toString(), width.getText().toString()));
+        int X = (int)Integer.parseInt(posX.getText().toString());
+        int Y = (int)Integer.parseInt(posY.getText().toString());
+        int W = (int)Integer.parseInt(width.getText().toString());
+        int L = (int)Integer.parseInt(length.getText().toString());
+        listOstores.get(storeTempPosition).Layout.add(new Store.Aisle("fruit","name", X, Y, W, L));
         tempPosition=storeTempPosition;
+        writeStoresFile();
         editStore(view);
+    }
+
+    public void storeDeleteAisle(View view) {
+        listOstores.get(storeTempPosition).Layout.remove(tempPosition);
+        tempPosition=-1;
+        redrawInterior();
+    }
+
+    public void redrawInterior(){
+        for(int i = 0 ; i < listOstores.get(storeTempPosition).Layout.size();i++) {
+            Store.Aisle a = listOstores.get(storeTempPosition).Layout.get(i);
+            if (i != tempPosition)
+                a.setColor("#B0B0B0");
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, StoreInterior.newInstance(listOstores.get(storeTempPosition))).commitNow();
+        ConstraintLayout canvas = findViewById(R.id.store_StoreCanvas);
+        canvas.addView(new StoreCanvas(getApplicationContext()));
+        EditText X = findViewById(R.id.aisle_PosX);
+        EditText Y = findViewById(R.id.aisle_PosY);
+        EditText W = findViewById(R.id.aisle_Width);
+        EditText L = findViewById(R.id.aisle_Length);
+        if(tempPosition!=-1) {
+            X.setText("" + listOstores.get(storeTempPosition).Layout.get(tempPosition).shape.left);
+            Y.setText("" + listOstores.get(storeTempPosition).Layout.get(tempPosition).shape.top);
+            W.setText("" + (listOstores.get(storeTempPosition).Layout.get(tempPosition).shape.right - listOstores.get(storeTempPosition).Layout.get(tempPosition).shape.left));
+            L.setText("" + (listOstores.get(storeTempPosition).Layout.get(tempPosition).shape.bottom - listOstores.get(storeTempPosition).Layout.get(tempPosition).shape.top));
+        }
+        else {
+            X.setText("");
+            Y.setText("");
+            W.setText("");
+            L.setText("");
+        }
     }
 
     //gets rectangle touch to highlight and then destroy drawn rectangle
@@ -354,8 +399,25 @@ public class Activity extends AppCompatActivity{
     public boolean onTouchEvent(MotionEvent event) {
         if(findViewById(R.id.store_StoreCanvas)!=null)
             if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                String text = "You click at x = " + event.getX() + " and y = " + (event.getY()-(findViewById(R.id.store_StoreCanvas).getTop()+getStatusBarHeight()));
-                Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+                int y = (int)(event.getY()-(findViewById(R.id.store_StoreCanvas).getTop()+getStatusBarHeight()));
+
+                if(y>=0&&y<=findViewById(R.id.store_StoreCanvas).getBottom()-getStatusBarHeight()) {
+                    for (int i = 0; i < listOstores.get(storeTempPosition).Layout.size(); i++) {
+                        Store.Aisle a = listOstores.get(storeTempPosition).Layout.get(i);
+                        if ((event.getX() >= a.shape.left * scale && event.getX() <= a.shape.right * scale) && (y >= a.shape.top * scale && y <= a.shape.bottom * scale)) {
+                            if (a.paint.getColor() == Color.parseColor("#B0B0B0"))
+                                a.setColor("#B0B0FF");
+                            else
+                                a.setColor("#B0B0B0");
+                            tempPosition = i;
+                            redrawInterior();
+                        }
+                        /*if (i == listOstores.get(storeTempPosition).Layout.size() - 1) {
+                            tempPosition = -1;
+                            redrawInterior();
+                        }*/
+                    }
+                }
             }
         return super.onTouchEvent(event);
     }

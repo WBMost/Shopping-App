@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:contentDescription="head back to menu"
-        android:onClick="openManageStores"
+        android:onClick="storeDeleteAisle"
         android:text="delete aisle"
         android:textColor="?android:attr/panelColorForeground"
         app:backgroundTint="?attr/colorAccent"

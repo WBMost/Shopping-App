@@ -32,7 +32,7 @@ public class StoreCanvas extends View {
         Store store = Activity.listOstores.get(Activity.storeTempPosition);
         for(Store.Aisle aisle: store.Layout) {
             mAisles.add(aisle);
-            canvas.drawRect(aisle.shape, aisle.paint);
+            canvas.drawRect(aisle.shape.left * Activity.scale, aisle.shape.top * Activity.scale, aisle.shape.right * Activity.scale, aisle.shape.bottom * Activity.scale, aisle.paint);
         }
     }
 }

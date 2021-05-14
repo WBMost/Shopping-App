@@ -7,6 +7,8 @@ import android.view.View;
 
 import androidx.constraintlayout.solver.widgets.Rectangle;
 
+import com.example.shoppinglist.Activity;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -94,18 +96,32 @@ public class Store {
             paint.setColor(Color.parseColor("#B0B0B0"));
         }
 
-        public Aisle(String mType, String mName, String x, String y, String l, String w)
+        public Aisle(String mType, String mName, String x, String y, String w, String l)
         {
             name = mName;
             type = mType;
             int posX = (int)Integer.parseInt(x);
             int posY = (int)Integer.parseInt(y);
+            int width = (int)Integer.parseInt(w);
+            int length = (int)Integer.parseInt(l);
 
-            shape = new Rect(posX, posY, posX+(int)Integer.parseInt(w), posY+(int)Integer.parseInt(l));
+            shape = new Rect(posX, posY, width, length);
             paint = new Paint();
             paint.setStrokeWidth(3);
             paint.setColor(Color.parseColor("#B0B0B0"));
         }
+
+        public Aisle(String mType, String mName, int x, int y, int w, int l)
+        {
+            name = mName;
+            type = mType;
+
+            shape = new Rect(x, y, w+x, l+y);
+            paint = new Paint();
+            paint.setStrokeWidth(3);
+            paint.setColor(Color.parseColor("#B0B0B0"));
+        }
+
 
         public void setColor(String c) {
             paint.setColor(Color.parseColor(c));
