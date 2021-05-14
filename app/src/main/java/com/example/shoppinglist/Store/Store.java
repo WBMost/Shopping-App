@@ -1,13 +1,20 @@
 package com.example.shoppinglist.Store;
 
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.view.View;
+
+import androidx.constraintlayout.solver.widgets.Rectangle;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Store {
     public ArrayList<Aisle> Layout;
-    String name;
-    String type;
-    String date;
+    public String name;
+    public String type;
+    public String date;
 
     public Store()
     {
@@ -72,58 +79,41 @@ public class Store {
     }
 
     public static class Aisle{
-        String name;
-        String type;
-        int posX,posY;
-        int width,length;
+        public String name;
+        public String type;
+        public Rect shape;
+        public Paint paint;
 
         public Aisle()
         {
-            String name = "unnamed";
-            String type = "Fruit";
-            posX = 0;
-            posY = 0;
-            width = 1;
-            length = 1;
+            name = "Fruit";
+            type = "Fruit";
+            shape = new Rect(0,0,50,150);
+            paint = new Paint();
+            paint.setStrokeWidth(3);
+            paint.setColor(Color.parseColor("#B0B0B0"));
         }
 
         public Aisle(String mType, String mName, String x, String y, String l, String w)
         {
-            String name = mName;
-            String type = mType;
-            posX = (int)Integer.parseInt(x);
-            posY = (int)Integer.parseInt(y);
-            width = (int)Integer.parseInt(w);
-            length = (int)Integer.parseInt(l);
+            name = mName;
+            type = mType;
+            int posX = (int)Integer.parseInt(x);
+            int posY = (int)Integer.parseInt(y);
+
+            shape = new Rect(posX, posY, posX+(int)Integer.parseInt(w), posY+(int)Integer.parseInt(l));
+            paint = new Paint();
+            paint.setStrokeWidth(3);
+            paint.setColor(Color.parseColor("#B0B0B0"));
         }
 
-        public String getName() {
-            return name;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public int getLength() {
-            return length;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-
-        public int getPosX() {
-            return posX;
-        }
-
-        public int getPosY() {
-            return posY;
+        public void setColor(String c) {
+            paint.setColor(Color.parseColor(c));
         }
 
         @Override
         public String toString() {
-            return type+"\\1"+name+"\\2"+posX+"\\3"+posY+"\\4"+length+"\\5"+width;
+            return type+"\\1"+name+"\\2"+shape.left+"\\3"+shape.top+"\\4"+shape.right+"\\5"+shape.bottom;
         }
     }
 }

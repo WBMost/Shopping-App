@@ -7,46 +7,54 @@
     android:layout_width="match_parent"
     tools:context=".MainMenu">
 
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
-        android:id="@+id/createItem"
-        android:layout_width="200dp"
+        android:id="@+id/createStore"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:contentDescription="head back to menu"
-        android:onClick="createItem"
-        android:text="create Item"
+        android:onClick="createStore"
+        android:text="create Store"
         android:textColor="?android:attr/panelColorForeground"
         app:backgroundTint="?attr/colorAccent"
         app:layout_constraintBottom_toBottomOf="@+id/leave"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/leave"
+        app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toTopOf="@+id/leave"
         app:layout_constraintVertical_bias="0.692" />
 
     <Button
         android:id="@+id/leave"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:contentDescription="head back to menu"
-        android:onClick="editList"
+        android:onClick="openManageStores"
         android:text="cancel"
         android:textColor="?android:attr/panelColorForeground"
         app:backgroundTint="?attr/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textView9"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.499" />
 
     <EditText
-        android:id="@+id/newItemName"
+        android:id="@+id/newStoreName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Item Name"
+        android:hint="Store Name"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,17 +64,17 @@
         app:layout_constraintVertical_bias="0.365" />
 
     <EditText
-        android:id="@+id/newItemType"
+        android:id="@+id/newStoreType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Item Type"
+        android:hint="Store Type"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/leave"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newItemName"
+        app:layout_constraintTop_toBottomOf="@+id/newStoreName"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

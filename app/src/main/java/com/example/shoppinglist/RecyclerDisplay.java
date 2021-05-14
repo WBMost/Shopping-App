@@ -1,4 +1,4 @@
-package com.example.shoppinglist.ListOLists;
+package com.example.shoppinglist;
 
 import android.os.Bundle;
 
@@ -9,13 +9,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.shoppinglist.R;
+import com.example.shoppinglist.ListOLists.EditLists;
+import com.example.shoppinglist.ListOLists.ListsFragment;
+import com.example.shoppinglist.ListOLists.gList;
+import com.example.shoppinglist.ListOLists.groLists;
 
 public class RecyclerDisplay extends Fragment {
     private groLists mList;
-    private gList gList;
+    private com.example.shoppinglist.ListOLists.gList gList;
 
     public RecyclerDisplay(groLists list) {
         mList = list;
@@ -33,7 +35,7 @@ public class RecyclerDisplay extends Fragment {
         if(gList==null)
             return inflater.inflate(R.layout.list_page, container, false);
         else {
-            return inflater.inflate(R.layout.grocery_page, container, false);
+            return inflater.inflate(R.layout.list_item_page, container, false);
         }
     }
 

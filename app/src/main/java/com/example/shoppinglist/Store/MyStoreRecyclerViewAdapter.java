@@ -20,6 +20,7 @@ import java.util.List;
 public class MyStoreRecyclerViewAdapter extends RecyclerView.Adapter<MyStoreRecyclerViewAdapter.ViewHolder> {
 
     private final List<Store> mValues;
+    MyStoreRecyclerViewAdapter maybe = this;
 
     public MyStoreRecyclerViewAdapter(ArrayList<Store> items) {
         mValues = items;
@@ -38,18 +39,20 @@ public class MyStoreRecyclerViewAdapter extends RecyclerView.Adapter<MyStoreRecy
         holder.mContentView.setText(mValues.get(position).name);
         holder.mDateView.setText(mValues.get(position).date);
 
+        if (Activity.tempPosition==position)
+            holder.cardView.setBackgroundColor(Color.parseColor("#F0F0F0"));
+        else
+            holder.cardView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
         holder.mMainLayout.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
-                if (!holder.selected) {
-                    holder.cardView.setBackgroundColor(Color.parseColor("#f0f0f0"));
-                    Activity.setTempPosition(position);
-                } else {
+                if(Activity.tempPosition==position)
                     Activity.setTempPosition(-1);
-                    holder.cardView.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                }
-                holder.selected = !holder.selected;
+                else
+                    Activity.setTempPosition(position);
+                maybe.notifyDataSetChanged();
             }
         });
     }

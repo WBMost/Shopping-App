@@ -1,9 +1,4 @@
-package com.example.shoppinglist.ListOLists;
-
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
+package com.example.shoppinglist.ShopList;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -12,20 +7,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.shoppinglist.Activity;
+import com.example.shoppinglist.ListOLists.gItem;
+import com.example.shoppinglist.ListOLists.gList;
 import com.example.shoppinglist.R;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link gList}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class ShoppingRecyclerViewAdapter extends RecyclerView.Adapter<ShoppingRecyclerViewAdapter.ViewHolder> {
 
     java.util.List mValues;
-    RecyclerViewAdapter maybe = this;
+    static gList shoplist;
+    ShoppingRecyclerViewAdapter maybe;
 
-    public RecyclerViewAdapter(java.util.List items) {
-        mValues = items;
+    public ShoppingRecyclerViewAdapter(gList items) {
+        shoplist = new gList();
+        shoplist.name = ""+items.name;
+        shoplist.date = ""+items.date;
+        shoplist.type = ""+items.type;
+        for(gItem i : items.ITEMS)
+        {
+            shoplist.ITEMS.add(new gItem(i.getType(),i.getName(),i.getDate()));
+        }
+        Activity.tempgListSelected = shoplist;
+        mValues = shoplist.ITEMS;
+        maybe = this;
     }
 
     @NonNull
@@ -37,13 +50,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = (gList) mValues.get(position);
-        holder.mIdView.setText(((gList) mValues.get(position)).type);
-        holder.mDescView.setText((((gList) mValues.get(position)).date));
-        if(((gList) mValues.get(position)).name.length()<21)
-            holder.mContentView.setText(((gList) mValues.get(position)).name);
+        holder.mItem = (gItem) mValues.get(position);
+        holder.mIdView.setText(((gItem) mValues.get(position)).getType());
+
+        holder.mDescView.setText((((gItem) mValues.get(position)).date));
+
+        if(((gItem) mValues.get(position)).getName().length()<21)
+            holder.mContentView.setText(((gItem) mValues.get(position)).getName());
         else
-            holder.mContentView.setText(((gList) mValues.get(position)).name.substring(0,19)+"...");
+            holder.mContentView.setText(((gItem) mValues.get(position)).getName().substring(0,19)+"...");
+
+        //debugging
+        /*if(position==0) {
+            holder.mIdView.setText("Select Pos: " + Activity.tempPosition);
+        }*/
 
         if (Activity.tempPosition==position)
             holder.cardView.setBackgroundColor(Color.parseColor("#F0F0F0"));

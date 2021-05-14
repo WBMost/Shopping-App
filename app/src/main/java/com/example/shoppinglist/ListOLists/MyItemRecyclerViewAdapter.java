@@ -23,6 +23,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     List mValues;
     static int itemSel=-1;
+    MyItemRecyclerViewAdapter maybe = this;
 
     public MyItemRecyclerViewAdapter(List items) { mValues = items; itemSel=-1; }
 
@@ -35,33 +36,30 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(((gItem) mValues.get(position)).type);
-        holder.mContentView.setText((((gItem) mValues.get(position)).name));
+        holder.mIdView.setText(((gItem) mValues.get(position)).getType());
+        holder.mContentView.setText((((gItem) mValues.get(position)).getName()));
         holder.mDateView.setText((((gItem) mValues.get(position)).date));
 
         //check string length to fit on screen
-        if(((gItem) mValues.get(position)).name.length()<21)
-            holder.mContentView.setText(((gItem) mValues.get(position)).name);
+        if(((gItem) mValues.get(position)).getName().length()<21)
+            holder.mContentView.setText(((gItem) mValues.get(position)).getName());
         else
-            holder.mContentView.setText(((gItem) mValues.get(position)).name.substring(0,19)+"...");
+            holder.mContentView.setText(((gItem) mValues.get(position)).getName().substring(0,19)+"...");
 
-        if(itemSel!=position)//checks if item was selected or not
+        if (Activity.tempPosition==position)
+            holder.cardView.setBackgroundColor(Color.parseColor("#F0F0F0"));
+        else
             holder.cardView.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        if(itemSel==position)//checks if item was selected or not
-            holder.cardView.setBackgroundColor(Color.parseColor("#f0f0f0"));
 
         holder.mMainLayout.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
-                if (!holder.selected) {
-                    holder.cardView.setBackgroundColor(Color.parseColor("#f0f0f0"));
-                    Activity.setTempPosition(position);
-                } else {
+                if(Activity.tempPosition==position)
                     Activity.setTempPosition(-1);
-                    holder.cardView.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                }
-                holder.selected = !holder.selected;
+                else
+                    Activity.setTempPosition(position);
+                maybe.notifyDataSetChanged();
             }
         });
     }
